@@ -1,22 +1,28 @@
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.database import Base
+from app.database import Base, get_db
 from app.main import app
 from app.config import settings
 from fastapi.testclient import TestClient
 import os
 
+@pytest.fixture(autouse=True)
+def test_env():
+    settings.TESTING = True
+    return settings
+
 # Use SQLite for testing
 TEST_DATABASE_URL = "sqlite:///./test.db"
 
 @pytest.fixture(scope="session")
-def test_db_engine():
+def test_db_engine(test_env):
     engine = create_engine(TEST_DATABASE_URL, connect_args={"check_same_thread": False})
     Base.metadata.create_all(bind=engine)
     yield engine
     Base.metadata.drop_all(bind=engine)
-    os.remove("./test.db")
+    if os.path.exists("./test.db"):
+        os.remove("./test.db")
 
 @pytest.fixture(scope="function")
 def db_session(test_db_engine):
