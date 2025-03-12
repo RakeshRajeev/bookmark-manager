@@ -7,9 +7,9 @@ class Settings(BaseSettings):
     POSTGRES_USER: str = "postgres"
     POSTGRES_PASSWORD: str = "postgres"
     POSTGRES_DB: str = "bookmark_manager"
-    POSTGRES_HOST: str = "localhost"
+    POSTGRES_HOST: str = "db"  # Changed from localhost to container name
     POSTGRES_PORT: str = "5432"
-    REDIS_URL: str = "redis://localhost"
+    REDIS_URL: str = "redis://redis:6379"  # Changed from localhost to container name
     API_V1_STR: str = "/api/v1"
     PROJECT_NAME: str = "Bookmark Manager"
 
