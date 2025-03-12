@@ -17,6 +17,10 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Bookmark Manager API")
 
+@app.get("/")
+async def root():
+    return {"message": "Welcome to Bookmark Manager API"}
+
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
