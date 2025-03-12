@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from . import models, schemas, crud
-from .database import SessionLocal, engine
+from .database import SessionLocal, engine, get_db
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_limiter import FastAPILimiter
@@ -39,14 +39,6 @@ async def startup():
         decode_responses=True
     )
     await FastAPILimiter.init(redis_instance)
-
-# Dependency
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 # URL shortening function
 def generate_short_url():
