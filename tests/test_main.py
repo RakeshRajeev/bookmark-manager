@@ -1,10 +1,15 @@
 import pytest
 from fastapi.testclient import TestClient
 from app.main import app
+from app.database import get_db
 
 client = TestClient(app)
 
-def test_create_bookmark():
+@pytest.fixture(autouse=True)
+def client(client):
+    return client
+
+def test_create_bookmark(client):
     response = client.post(
         "/shorten/",
         json={"url": "https://example.com", "title": "Test"}
