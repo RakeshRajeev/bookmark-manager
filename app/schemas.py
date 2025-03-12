@@ -1,12 +1,10 @@
 from pydantic import BaseModel, HttpUrl
-from datetime import datetime
 from typing import Optional
+from datetime import datetime
 
 class BookmarkBase(BaseModel):
-    url: HttpUrl
+    url: str
     title: Optional[str] = None
-    description: Optional[str] = None
-    is_private: bool = False
 
 class BookmarkCreate(BookmarkBase):
     pass
@@ -14,9 +12,8 @@ class BookmarkCreate(BookmarkBase):
 class Bookmark(BookmarkBase):
     id: int
     slug: str
-    created: datetime
     clicks: int
-    user_id: Optional[int]
+    created_at: datetime
 
     class Config:
         orm_mode = True
