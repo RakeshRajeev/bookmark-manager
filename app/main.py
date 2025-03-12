@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, Request
+from fastapi import FastAPI, Depends, HTTPException, Request, Response
 from sqlalchemy.orm import Session
 from . import models, schemas, crud
 from .database import SessionLocal, engine, get_db
@@ -62,11 +62,12 @@ def read_bookmark(bookmark_id: int, db: Session = Depends(get_db)):
     return bookmark
 
 @app.post("/shorten/", response_model=schemas.Bookmark)
-@RateLimiter(times=10, seconds=60)
 async def create_short_url(
+    response: Response,  # Add response parameter
     bookmark: schemas.BookmarkCreate, 
     request: Request,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _: bool = Depends(RateLimiter(times=10, seconds=60))  # Changed rate limiter usage
 ):
     bookmark_dict = bookmark.dict()
     bookmark_dict["slug"] = generate_short_url()
