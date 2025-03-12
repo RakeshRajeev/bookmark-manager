@@ -53,6 +53,10 @@ jobs:
         REDIS_URL: redis://localhost:6379
       run: |
         pytest
+    - name: Run security checks
+      run: |
+        bandit -r app/
+        safety check
 
   build-and-push:
     needs: test
