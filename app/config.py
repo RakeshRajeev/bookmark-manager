@@ -4,12 +4,12 @@ import os
 
 class Settings(BaseSettings):
     TESTING: bool = False
-    POSTGRES_USER: str = "postgres"
-    POSTGRES_PASSWORD: str = "postgres"
-    POSTGRES_DB: str = "bookmark_manager"
-    POSTGRES_HOST: str = os.getenv("POSTGRES_HOST", "localhost")  # Default to localhost for local dev
-    POSTGRES_PORT: str = "5432"
-    REDIS_URL: str = "redis://redis:6379"  # Changed from localhost to container name
+    POSTGRES_USER: str = os.getenv("POSTGRES_USER", "postgres")
+    POSTGRES_PASSWORD: str = os.getenv("POSTGRES_PASSWORD", "postgres")
+    POSTGRES_DB: str = os.getenv("POSTGRES_DB", "bookmark_manager")
+    POSTGRES_HOST: str = os.getenv("POSTGRES_HOST", "localhost")
+    POSTGRES_PORT: str = os.getenv("POSTGRES_PORT", "5432")
+    REDIS_URL: str = os.getenv("REDIS_URL", "redis://localhost:6379")
     API_V1_STR: str = "/api/v1"
     PROJECT_NAME: str = "Bookmark Manager"
 
