@@ -75,11 +75,12 @@ async def create_short_url(
 
 @app.get("/analytics/")
 async def get_analytics(db: Session = Depends(get_db)):
-    return {
+    analytics = {
         "total_bookmarks": crud.get_bookmark_count(db),
         "total_clicks": crud.get_total_clicks(db),
         "popular_links": crud.get_popular_bookmarks(db, limit=5)
     }
+    return analytics
 
 @app.get("/health")
 async def health_check():
