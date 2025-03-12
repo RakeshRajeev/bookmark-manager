@@ -5,10 +5,6 @@ from app.database import get_db
 
 client = TestClient(app)
 
-@pytest.fixture(autouse=True)
-def client(client):
-    return client
-
 def test_create_bookmark(client):
     response = client.post(
         "/shorten/",
@@ -17,16 +13,16 @@ def test_create_bookmark(client):
     assert response.status_code == 200
     assert "slug" in response.json()
 
-def test_get_bookmark():
+def test_get_bookmark(client):
     response = client.get("/bookmarks/1")
     assert response.status_code in [200, 404]
 
-def test_analytics():
+def test_analytics(client):
     response = client.get("/analytics/")
     assert response.status_code == 200
     assert "total_bookmarks" in response.json()
 
-def test_read_root():
+def test_read_root(client):
     response = client.get("/")
     assert response.status_code == 200
     assert response.json() == {"message": "Welcome to Bookmark Manager API"}
