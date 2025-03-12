@@ -6,6 +6,28 @@
 - Redis for caching and rate limiting
 - Docker containerization
 
+## Setup Development Environment
+
+1. Create a virtual environment:
+```bash
+python -m venv venv
+```
+
+2. Activate the virtual environment:
+```bash
+# Windows
+venv\Scripts\activate
+# Unix/MacOS
+source venv/bin/activate
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+These steps ensure isolated development environment with correct package versions.
+
 ## Installation & Setup
 1. Clone the repository
 2. Install dependencies: `pip install -r requirements.txt`
