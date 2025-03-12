@@ -96,6 +96,8 @@ jobs:
       env:
         DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
       run: |
+        echo "DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }}" > .env
         docker compose pull
-        docker compose down
-        docker compose up -d
+        docker compose down --remove-orphans
+        docker compose up -d --force-recreate
+        docker compose ps
