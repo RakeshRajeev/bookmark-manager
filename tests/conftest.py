@@ -10,19 +10,17 @@ import os
 @pytest.fixture(autouse=True)
 def test_env():
     settings.TESTING = True
+    settings.POSTGRES_HOST = os.getenv("POSTGRES_HOST", "localhost")
+    settings.POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5432")
+    settings.DATABASE_URL = f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
     return settings
-
-# Use SQLite for testing
-TEST_DATABASE_URL = "sqlite:///./test.db"
 
 @pytest.fixture(scope="session")
 def test_db_engine(test_env):
-    engine = create_engine(TEST_DATABASE_URL, connect_args={"check_same_thread": False})
+    engine = create_engine(test_env.DATABASE_URL)
     Base.metadata.create_all(bind=engine)
     yield engine
     Base.metadata.drop_all(bind=engine)
-    if os.path.exists("./test.db"):
-        os.remove("./test.db")
 
 @pytest.fixture(scope="function")
 def db_session(test_db_engine):
