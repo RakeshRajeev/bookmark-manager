@@ -7,17 +7,16 @@ from app.config import settings
 from fastapi.testclient import TestClient
 import os
 
-@pytest.fixture(autouse=True)
+@pytest.fixture(scope="session")
 def test_env():
     settings.TESTING = True
     settings.POSTGRES_HOST = os.getenv("POSTGRES_HOST", "localhost")
     settings.POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5432")
-    settings.DATABASE_URL = f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
     return settings
 
 @pytest.fixture(scope="session")
-def test_db_engine(test_env):
-    engine = create_engine(test_env.DATABASE_URL)
+def test_db_engine():
+    engine = create_engine(settings.DATABASE_URL)
     Base.metadata.create_all(bind=engine)
     yield engine
     Base.metadata.drop_all(bind=engine)
