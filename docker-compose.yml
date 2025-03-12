@@ -2,7 +2,7 @@ version: '3.8'
 services:
   web:
     build: .
-    image: bookmark-manager:latest
+    image: ${DOCKER_HUB_USERNAME}/bookmark-manager:latest
     ports:
       - "8000:8000"
     depends_on:
